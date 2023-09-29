@@ -8,8 +8,13 @@ vim.wo.relativenumber = true
 -- Copy to system clipboard
 vim.api.nvim_set_option("clipboard","unnamed")
 
--- Tab space
-vim.opt.tabstop = 4
-vim.opt.softtabstop = 4
-vim.opt.shiftwidth = 4
+-- Tab width
+vim.opt.tabstop = 2
+vim.opt.softtabstop = 2
+vim.opt.shiftwidth = 2
+-- Use spaces for tab
+vim.opt.expandtab = true
+
+-- Turn off LSP logging
+vim.lsp.set_log_level("off")
 

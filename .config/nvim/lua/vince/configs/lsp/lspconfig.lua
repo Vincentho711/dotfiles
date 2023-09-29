@@ -53,6 +53,14 @@ lspconfig["svlangserver"].setup({
 	on_attach = on_attach
 })
 
+-- Verible, error downloading it with Mason on macOS
+--[[
+lspconfig["verible"].setup({
+    capabilities = capabilities,
+    on_attach = on_attach
+})
+--]]
+
 -- Cmake
 lspconfig["cmake"].setup({
 	capabilities = capabilities,
