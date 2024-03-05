@@ -67,4 +67,7 @@ return require('packer').startup(function(use)
 
 	-- Gitsigns for git utilities like highlighting new lines
 	use { "lewis6991/gitsigns.nvim" }
+
+  -- Comment for commenting line/blocks using shortcuts
+  use { "numToStr/Comment.nvim" }
 end)

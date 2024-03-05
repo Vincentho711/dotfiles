@@ -20,7 +20,7 @@ map("n", "J", "mzJ`z")
 map("x", "<Leader>p", "\"_dP")
 
 -- For telescope
-local builtin = require('telescope.builtin')
+local telescope_builtin = require('telescope.builtin')
 
 map("n", ",<Space>", ":nohlsearch<CR>", { silent = true })
 -- map("n", "<Leader>", ":<C-u>WhichKey ','<CR>", { silent = true })
@@ -28,4 +28,16 @@ map("n", "<Leader>e", ":NvimTreeToggle ','<CR>", { silent = true })
 -- Telescope
 map("n", "<Leader>ff", "<cmd>Telescope find_files<cr>", { silent = true })
 map("n", "<Leader>fg", "<cmd>Telescope live_grep<cr>", { silent = true })
+map("n", "<Leader>fb", "<cmd>Telescope buffers<cr>", { silent = true })
+map("n", "<Leader>fh", "<cmd>Telescope help_tags<cr>", { silent = true })
 -- map("n", "<Leader>?", ":WhichKey ','<CR>")
+
+-- For Gitsigns
+local gitsigns = require('gitsigns')
+map("n", "<Leader>hs", "<cmd>Gitsigns stage_hunk<cr>", { silent = true })
+map("n", "<Leader>hr", "<cmd>Gitsigns reset_hunk<cr>", { silent = true })
+map("n", "<Leader>hp", "<cmd>Gitsigns preview_hunk<cr>", { silent = true })
+map("n", "<Leader>hu", "<cmd>Gitsigns undo_stage_hunk<cr>", { silent = true })
+map("n", "<Leader>tb", "<cmd>Gitsigns toggle_current_line_blame<cr>", { silent = true})
+map("n", "<Leader>hd", "<cmd>Gitsigns diffthis<cr>", { silent = true })
+map("n", "<Leader>td", "<cmd>Gitsigns toggle_deleted<cr>", { silent = true })
