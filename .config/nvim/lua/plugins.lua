@@ -67,4 +67,7 @@ return require('packer').startup(function(use)
 
   -- Comment for commenting line/blocks using shortcuts
   use { "numToStr/Comment.nvim" }
+
+  -- Neogen for generating docstrings for many languages
+  use { "danymat/neogen" }
 end)

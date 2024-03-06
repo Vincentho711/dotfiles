@@ -41,3 +41,7 @@ map("n", "<Leader>hu", "<cmd>Gitsigns undo_stage_hunk<cr>", { silent = true })
 map("n", "<Leader>tb", "<cmd>Gitsigns toggle_current_line_blame<cr>", { silent = true})
 map("n", "<Leader>hd", "<cmd>Gitsigns diffthis<cr>", { silent = true })
 map("n", "<Leader>td", "<cmd>Gitsigns toggle_deleted<cr>", { silent = true })
+
+-- For Neogen
+local neogen = require('neogen')
+map("n", "<Leader>ng", "<cmd>Neogen<cr>", { silent = true})
