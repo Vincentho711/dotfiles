@@ -20,8 +20,8 @@ mason_lspconfig.setup({
 	"cmake",
 	"pyright",
 	"svlangserver",
-  -- Mason can't install verible on macOS
-  --"verible",
+  -- Mason can't install verible on macOS, it is fixed now!
+  "verible",
   "lua_ls"
   },
   -- auto-install configured servers (with lspconfig)

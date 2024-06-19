@@ -19,9 +19,10 @@ local on_attach = function(client, bufnr)
 
   -- set keybinds
   keymap.set("n", "gf", "<cmd>Lspsaga lsp_finder<CR>", opts) -- show definition, references
-  keymap.set("n", "gD", "<Cmd>lua vim.lsp.buf.declaration()<CR>", opts) -- got to declaration
+  keymap.set("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts) -- got to declaration
   keymap.set("n", "gd", "<cmd>Lspsaga peek_definition<CR>", opts) -- see definition and make edits in window
   keymap.set("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts) -- go to implementation
+  keymap.set("n", "gF", "<cmd>lua vim.lsp.buf.format()<CR>", opts) -- format the file with lsp
   keymap.set("n", "<leader>ca", "<cmd>Lspsaga code_action<CR>", opts) -- see available code actions
   keymap.set("n", "<leader>rn", "<cmd>Lspsaga rename<CR>", opts) -- smart rename
   keymap.set("n", "<leader>D", "<cmd>Lspsaga show_line_diagnostics<CR>", opts) -- show  diagnostics for line
@@ -53,13 +54,12 @@ lspconfig["svlangserver"].setup({
 	on_attach = on_attach
 })
 
--- Verible, error downloading it with Mason on macOS
---[[
+-- Verible, error downloading it with Mason on macOS, it is fixed now!
 lspconfig["verible"].setup({
     capabilities = capabilities,
-    on_attach = on_attach
+    on_attach = on_attach,
+    root_dir = function() return vim.loop.cwd() end
 })
---]]
 
 -- Cmake
 lspconfig["cmake"].setup({
