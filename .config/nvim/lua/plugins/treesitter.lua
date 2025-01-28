@@ -87,7 +87,7 @@ return {
     local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
     parser_config.verible = {
       install_info = {
-        url = "~/.local/share/nvim/bin/verible-verilog-syntax" -- Installed along with Verible LSP in Mason
+        url = "~/.local/share/nvim/mason/bin/verible-verilog-syntax" -- Installed along with Verible LSP in Mason
       },
       filetype = {"verilog", "systemverilog"}
     }
