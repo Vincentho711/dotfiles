@@ -54,9 +54,9 @@ end
 -- Set a keymap to run the p4 diff current buffer in float toggleterm
 map("n", "<leader>p4d", "<cmd>lua _p4_diff_in_toggleterm()<CR>", { desc = "p4 diff current buffer" })
 -- Set a keymap to run the p4 edit current buffer
-map("n", "<leader>p4d", "<cmd>lua p4_edit_current_buffer()<CR>", { desc = "p4 edit current buffer" })
+map("n", "<leader>p4e", "<cmd>lua p4_edit_current_buffer()<CR>", { desc = "p4 edit current buffer" })
 -- Set a keymap to run the p4 revert current buffer
-map("n", "<leader>p4d", "<cmd>lua p4_revert_current_buffer()<CR>", { desc = "p4 revert current buffer" })
+map("n", "<leader>p4r", "<cmd>lua p4_revert_current_buffer()<CR>", { desc = "p4 revert current buffer" })
 
 -- Mapping for SignifyHunkDiff
 map("n", "<leader>shd", ":SignifyHunkDiff<CR>", { desc = " Hunk Diff" })

@@ -11,6 +11,7 @@ return {
       "verible",
       "clangd",
     },
+    automatic_installation = false,
   },
   ---@param opts MasonSettings | {ensure_installed: string[]}
   config = function(_, opts)

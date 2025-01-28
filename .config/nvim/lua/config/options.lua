@@ -4,6 +4,8 @@
 -- Copy and paste into system clipboard
 vim.opt.clipboard = "unnamedplus"
 -- Disable autoformatting on save
--- vim.g.autoformat = false
+vim.g.autoformat = false
 -- Disable Snack animations
 vim.g.snacks_animate = false
+-- Disable writting of LSP log to ~/.local/state/nvim/lsp.log
+vim.lsp.log.set_level(vim.log.levels.OFF)
