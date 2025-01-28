@@ -1,0 +1,832 @@
+# $Id: //hw/nv/env/.cshrc_custom#2 $
+
+########################################
+# Recommended to run hw tools
+########################################
+#############################################################
+# If you are in hurry, copy paste this file whole in your .cshrc_custom
+# Stuff in yellow is worth reading for most users
+# Power users may like to read other comments
+# For edits, 'suggest edit' in doc or mail
+#############################################################
+##setup env if this is being sourced from someone else's shell
+if (! $?HNAME) setenv HNAME `hostname`
+if (! $?SEP)  setenv SEP   ":"
+alias gcc cc
+if ($?P4PASSWD) then
+  echo "WARNING: The P4PASSWD environment variable is not to be used anymore because its value can be seen by anyone. Instead use "p4 login -a" to get a ticket."
+endif
+alias p4 'p4 -d `/bin/pwd`'
+
+alias checkbuild "egrep -i '(\*\*|error)' \!* | grep -v ignore"
+alias email 'ypcat passwd | egrep -i \(\!*\)'
+alias ud unsetenv DISPLAY
+
+#############################################################
+# Following env vars are used by various aliases
+# Set them as needed
+# MYTEAM : team ex. 'mss', 'ucf'
+# MYPROJECT : project being built ex. 'th500', set using set-project
+# MYBRANCH : branch used, ex. 'nvmobile', set using set-branch
+# MYSCRATCH : scratch space, hardcoded in script
+# MYEDITOR : editor used, hardcoded in script
+#############################################################
+setenv MYTEAM "mss"
+if (! $?HOSTNAME) set HOSTNAME=`uname -n`
+if (! $?MYPROJECT) setenv MYPROJECT "th500"
+if (! $?MYCLIENT) setenv MYCLIENT "sync"
+if (! $?MYBRANCH) setenv MYBRANCH "nvmobile"
+setenv MYALIAS "~/.cshrc_custom"
+setenv MYSCRATCH "/home/scratch.${USER}_mobile"
+if ( ! -d ${MYSCRATCH} ) then
+  echo "WARNING: The MYSCRATCH environment variable ( = ${MYSCRATCH}) is not set to a valid scratch path. Please fix it in your user setup file (~/.cshrc_common ?)."
+endif
+setenv EDITOR 'nvim -f' # Preferred editor.
+setenv MYEDITOR 'nvim -p'
+if ( `date +%Z` == "PDT" ) then
+   setenv P4PORT p4proxy-sc:4101
+   setenv MYLOC "US"
+   setenv LOCALE "sc"
+endif
+if ( `date +%Z` == "PST" ) then
+   setenv P4PORT p4proxy-sc:4101
+   setenv MYLOC "US"
+   setenv LOCALE "sc"
+endif
+if ( `date +%Z` == "IST" ) then
+   setenv P4PORT p4proxy-bangalore:4101
+   setenv MYLOC "IN"
+   setenv LOCALE "in"
+endif
+if ( `date +%Z` == "HKT" ) then
+   setenv P4PORT p4proxy-hk:4101
+   setenv MYLOC "HK"
+   setenv LOCALE "hk"
+endif
+if ( `hostname | cut -f1 -d '-'` == "dc6" ) then
+   setenv P4PORT p4proxy-dc6:4101
+   setenv MYLOC "DC6"
+endif
+if ( `hostname | cut -f1 -d '-'` == "rno" ) then
+   setenv P4PORT p4proxy-dc6:4101
+   setenv MYLOC "DC6"
+endif
+if ( `hostname | cut -f1 -d '-'` == "pdx" ) then
+   setenv P4PORT p4proxy-pdx:4101
+   setenv MYLOC "PDX"
+endif
+setenv P4USER ${USER}
+setenv P4CONFIG .p4config
+setenv P4EDITOR 'nvim'
+#setenv P4DIFF '/bin/vimdiff'
+setenv P4DIFF 'nvim -d'
+if ( ${MYPROJECT} == "t210" ) then
+        setenv MYPROJECTTAG hw_ip_${MYTEAM}
+else
+        setenv MYPROJECTTAG hw_${MYTEAM}
+endif
+setenv MYPROJECTTEAM mobile_${MYPROJECT}_${MYPROJECTTAG}
+setenv history 5000                     # save last n commands
+set history = 5000                      # save last n commands
+setenv CADENCE_VIP_LIC_CUSTOM 1
+setenv CADENCE_VIP_LIC_Q_TIMEOUT 150
+
+########################################
+# ALIASES
+########################################
+
+alias a "alias"
+a una "unalias"
+a . "pwd"
+a .. "cd .."
+a ... "cd ../.."
+a .... "cd ../../.."
+a ..... "cd ../../../.."
+a - "cd -"
+a dk "du -sk"
+a dm "du -sm"
+a df "df -h ."
+a difv "difr"
+a mkn "/auto/\!*/MK"
+a ll "ls -lrt"
+a la "ls -Alrt"
+a ld "ls -d"
+a lns "ln -s"
+a mv "mv -i"
+a cp "cp -ir"
+a rf "rm -f"
+a rd "rm -rf"
+a md "mkdir"
+a g "grep"
+a gp "g"
+a g-v "g -v"
+a g-r "g -r"
+a g-l "g -l"
+a g-i "g -i"
+a g-il "g -i -l"
+a g-m "g \!* | more"
+a h history
+a hg "h | g"
+a hm "h | more"
+a pdf "acroread \!* &"
+a t "touch"
+a cnt "\!* | wc -l"
+a fi "find ."
+a fin "fi -name"
+a v "${MYEDITOR}"
+a vi "${MYEDITOR}"
+a vim "${MYEDITOR}"
+a gvim "${MYEDITOR}"
+a c "clear"
+a q "exit"
+a s "source"
+a todo "more ~/TODO;cat >> ~/TODO"
+a m "make"
+a mk "m"
+a d "date"
+a now 'setenv NOW `date +%F-%T`'
+a tk "tkdiff \!* &"
+a tkr "tkdiff -r\!:1 -r\!:2 \!:3* &"
+a scp "scp -r"
+a vncs "vncserver -geometry 1920x1100 -randr 1920x1100,1600x835,1280x750,600x335 -desktop"
+a vnck "vncserver -kill"
+a vncc "vncconfig"
+a vncd "xrandr -s 1920x1100"
+a vncl "xrandr -s 1600x835"
+a vnct "xrandr -s 1280x750"
+a vncm "xrandr -s 600x335"
+a xv "xargs ${MYEDITOR}"
+a xt "xterm -T"
+a xterm_sized "xterm -sb -sl 600 -fg white -bg gray40 -cr yellow -fn 9x15 -name $HNAME"
+a xx "xterm_sized \!* &"
+a xh "xterm_sized -fg black -bg white &"
+a xs "nohup xterm_sized & ; exit"
+a xn "xterm_sized -title \!* &"
+a xxd "setenv DISPLAY \!* ; xx & ; sleep 2 ; exit"
+a lp "lp -w"
+a lpr 'lpr -h' # skip header page on print jobs
+a woman 'man -a'
+
+########################################
+# MYALIAS
+# s-p prints version available
+# s-r prints version sourced
+# s-e edits this file
+# s-r re-sources this file
+# s-m mails this file
+# s-s syncs this file across sites
+# s-h provides help message
+########################################
+a s-p "g LUO ${MYALIAS} | head -1 | sed -e 's/.* //'"
+a s-r "una -a && cd ~/bin && upd ${MYALIAS} && - && source ${MYALIAS}"
+a s-e "cd ~/bin && upd ${MYALIAS} && get ${MYALIAS} && v ${MYALIAS} & && -"
+a s-m "cat ${MYALIAS} | mail -s alias ${USER}@nvidia.com"
+a s-d "cd ~/bin && tkd ${MYALIAS} &; -"
+a s-u "cd ~/bin && p4 submit -d '\!:1' ${MYALIAS} && - && s-s"
+a s-s "una -a && source ${MYALIAS}"
+a s-h "cat ${MYALIAS} | head -27 | tail -24 | more"
+
+a s-sv "scp ${USER}@ban-cron:.vimrc ~"
+a s-sr "scp ${USER}@ban-cron:rc ~"
+a s-sb "scp ${USER}@ban-cron:bin ~"
+
+########################################
+# LSF
+########################################
+a qsub "qsub --projectMode direct -P ${MYPROJECTTEAM}"
+a b "qsub"
+a b-i "b -I"
+a b-q "list_queues"
+a b-s "b-i -q o_vcs_2G_4H"
+a b-m "b-i -q o_vcs_8G_8H"
+a b-l "b-i -q o_vcs_4G"
+a b-a "b-i -q o_vcs_8G"
+a b-w "b-i -q o_pri_interactive \!* &"
+a b-v "b-i -q o_pri_cpu_64G \!* &"
+
+
+a p4_put "p4 submit"
+a p4_lck "p4 lock"
+a p4_unl "p4 revert"
+a p4_get "p4 edit"
+a p4_upd "p4 sync"
+a p4_ver "p4 filelog -l \!* | more"
+a p4_dif "setenv P4DIFF diff; p4 diff \!* ; setenv P4DIFF tkdiff"
+a p4_tkd "p4 diff"
+a p4_sts "p4 have"
+a p4_chg "p4 changes -u ${USER} \!* | more"
+a p4_dsc "p4 describe \!* | more"
+a p4_dscs "p4 describe  -s \!* | more"
+a p4_shv "p4 shelve"
+a p4_ushv "p4 unshelve"
+a as2_put "as2 -r submit"
+a as2_chg "as2 status"
+a as2_dsc "as2 describe \!* | more"
+a as2_shv "as2 submit -h"
+a as2_ushv "as2 retrieve"
+
+# Lock
+a lck "p4_lck"
+# Unlock
+a unl "p4_unl"
+# Opened
+a opd "p4 opened"
+# Resolve
+a rsv "p4 resolve"
+# Shelve
+a shv "as2_shv"
+# Unshelve
+a ushv "as2_ushv"
+# Tkdiff
+a tkd "p4_tkd"
+# diff
+a dif "p4_dif"
+# Version history
+a ver "p4_ver"
+# Checkin
+a put "as2_put"
+# Check out
+a get "p4_get"
+# Status
+a sts "p4_sts"
+# Update
+a upd "p4_upd"
+# Changes
+a chg "as2_chg"
+# Change description
+a dsc "as2_dsc"
+# Integrate
+a intf "p4 integrate //hw/nvmobile/...@\!*,\!* //hw/nvmobile_t186/... && rsv"
+a intb "p4 integrate //hw/nvmobile_t186/...@\!*,\!* //hw/nvmobile/... && rsv"
+a intg "intb"
+# Store local change into *.pipe
+a pi_get "cp \!* \!*.pipe && unl \!*"
+# Fetch local change from *.pipe
+a pi_put "get \!* && yes | mv \!*.pipe \!*"
+# Update + lock
+a ugl "upd \!* && get \!* && lck \!*"
+# Update + resolve
+a usv "upd \!*; rsv \!*"
+# Opened list xarg-ed
+a opl "opd \!* | cut -f1 -d '#' | xargs"
+a opf "opd \!* | cut -f1 -d '#' | sed -e 's/\/\/hw\/[^/]\+\///' | xargs"
+a cr "crontab"
+a cr-e "cr -e"
+a cr-l "cr -l"
+
+########################################
+# GENIE
+########################################
+setenv GENIE_BRANCH_DEFAULT ${MYBRANCH}
+a genie-depth 'p4 info | awk "/^Client root:/{printf "\$"3}" | sed -e "s/"\$"/\/hw\/${GENIE_BRANCH_DEFAULT}/"'
+a genie-go '\
+        a depth genie-depth; '
+a genie-no '\
+        una depth '
+a gwipe "gclean \!*; echo yes | pwa delete \!*"
+
+########################################
+# ENV VARIABLES
+########################################
+umask 002
+set autolist
+set complete=enhance
+set nobeep
+set autocorrect
+set noclobber
+unset autologout
+# sets prompt to "machine@current directory in bold> "
+setenv MYPROMPT "tb500m"
+#set prompt="%M@${MYPROMPT}-%B%C%b%# "
+set prompt="%{\e[33m%}%M@${MYPROMPT}%{\e[37m%}-%B%{\e[32m%}%C%b%# "
+
+########################################
+# Tree Scripts
+########################################
+a lc "nvrun logCheckerMC.pl"
+a vl "nvrun VerifLint"
+a drbc '`depth`'"/bin/libwrap ${MYPROJECT}_Linux/drbc_${MYPROJECT}"
+
+########################################
+# CD RELOADED
+# cwxy cd?s into a work area location that makes sense for user
+########################################
+a cwp "cd ${MYSCRATCH}"
+a cwpg "cd ${MYSCRATCH}/genie/\!*"
+a cwg "cwpg src/\!*"
+a cwgo "cwpg out/\!*"
+a cw 'cd `depth`'
+a cwm "cd /home/scratch.msstegra_${MYPROJECT}/msstegra${MYLOC}${MYPROJECT}_auto\!*/ap"
+a cwx "cd /home/scratch.msstegra_${MYPROJECT}"
+a cwxb "cd /home/scratch.msstegra_${MYPROJECT}/bugs"
+a cwxd "cd /home/scratch.msstegra_${MYPROJECT}/build"
+a cwxn "cd /home/scratch.msstegra_${MYPROJECT}/bin"
+a cwxs "cd /home/scratch.msstegra_${MYPROJECT}/scheduler"
+a cwxk "cd /home/scratch.msstegra_${MYPROJECT}/buckets"
+a cw 'cd `depth`'
+a cwtt "cd ${MYSCRATCH}/${USER}${MYLOC}${MYPROJECT}_${MYCLIENT}/hw/${MYBRANCH}"
+# Global
+a cwvs 'cd `depth`/vmodels/shared/systemVerilog/src'
+a cwtg 'cd `depth`/diag/testgen'
+a cwvl 'cd `depth`/vlib'
+a cwar 'cd `depth`/diag/testgen/config_rwmp/argFiles'
+a cwcm 'cd `depth`/cmod/mc/tools'
+a cwcd 'cd `depth`/cmod/mc/tools/drbc'
+a cwdm 'cd `depth`/dvlib/mc/checkers'
+a cwin 'cd `depth`/include'
+a cwmw 'cd `depth`/ip/clusters/mss_cluster/1.1/simv/mpc/tb'
+# AXICIF
+a cwat 'cd `depth`/ip/socip/backbone_data/1.0/stand_sim/ntb_axicif/testbench/env'
+a cwav 'cd `depth`/ip/socip/backbone_data/1.0/stand_sim/ntb_axicif/testbench/simv'
+# DBB
+a cwbe 'cd `depth`/ip/socip/backbone_data/2.0/etc'
+a cwbr 'cd `depth`/ip/socip/backbone_data/2.0/vmod'
+a cwbt 'cd `depth`/ip/socip/backbone_data/2.0/stand_sim/backbone_data/testbench/env'
+a cwbv 'cd `depth`/ip/socip/backbone_data/2.0/stand_sim/backbone_data/testbench/simv'
+a cwbp 'cd `depth`/ip/socip/backbone_data/2.0/regression/testplans'
+a cwbs 'cd `depth`/ip/socip/backbone_data/2.0/stand_sim/backbone_data/stim'
+a cwbd 'cd `depth`/ip/socip/backbone_data/2.0/defs'
+# HUB
+a cwhb 'cd `depth`/ip/mss/hub/2.0/bin'
+a cwhe 'cd `depth`/ip/mss/hub/2.0/etc'
+a cwhr 'cd `depth`/ip/mss/hub/2.0/vmod/hub'
+a cwhp 'cd `depth`/ip/mss/hub/2.0/regression/testplans'
+a cwht 'cd `depth`/ip/mss/hub/2.0/stand_sim/public/mss_hub/testbench/tb'
+a cwhv 'cd `depth`/ip/mss/hub/2.0/stand_sim/private/mss_hub/testbench/sim'
+a cwhd 'cd `depth`/ip/mss/hub/2.0/defs'
+a cwhl 'cd `depth`/ip/mss/hub/2.0/dvlib/public'
+# MCC
+a cwcb 'cd `depth`/ip/mss/channel/1.0/bin'
+a cwce 'cd `depth`/ip/mss/channel/1.0/etc'
+a cwcr 'cd `depth`/ip/mss/channel/1.0/vmod/mc'
+a cwcl 'cd `depth`/ip/mss/channel/1.0/dvlib'
+a cwcd 'cd `depth`/ip/mss/channel/1.0/defs'
+a cwct 'cd `depth`/ip/mss/channel/1.0/stand_sim/mc/channel/tb'
+a cwcv 'cd `depth`/ip/mss/channel/1.0/stand_sim/mc/channel/sim'
+# MC
+a cwmb 'cd `depth`/ip/mss/mc/4.0/bin'
+a cwme 'cd `depth`/ip/mss/mc/4.0/etc'
+a cwmr 'cd `depth`/ip/mss/mc/4.0/vmod/mc'
+a cwml 'cd `depth`/ip/mss/mc/4.0/dvlib'
+a cwmd 'cd `depth`/ip/mss/mc/4.0/defs'
+# Cluster
+a cwub 'cd `depth`/ip/clusters/mss_cluster/1.1/bin'
+a cwud 'cd `depth`/ip/clusters/mss_cluster/1.1/defs'
+a cwue 'cd `depth`/ip/clusters/mss_cluster/1.1/etc'
+a cwur 'cd `depth`/ip/clusters/mss_cluster/1.1/vmod/mss'
+a cwut 'cd `depth`/ip/clusters/mss_cluster/1.1/stand_sim/mtb/testbench/tb'
+a cwuv 'cd `depth`/ip/clusters/mss_cluster/1.1/stand_sim/mtb/testbench/simv'
+a cwup 'cd `depth`/ip/clusters/mss_cluster/1.1/regression/testplans'
+a cwus 'cd `depth`/ip/clusters/mss_cluster/1.1/stand_sim/mtb/stim'
+a cwul 'cd `depth`/ip/clusters/mss_cluster/1.1/dvlib/checkers'
+# MTB+
+a cwpt 'cd `depth`/ip/clusters/mss_cluster/1.1/stand_sim/mtb_perf/testbench/tb'
+a cwpv 'cd `depth`/ip/clusters/mss_cluster/1.1/stand_sim/mtb_perf/testbench/simv'
+a cwps 'cd `depth`/ip/clusters/mss_cluster/1.1/stand_sim/mtb_perf/traces'
+# MCF
+a cwfe 'cd `depth`/ip/mss/mcf/2.1/etc'
+a cwfr 'cd `depth`/ip/mss/mcf/2.1/vmod/mcf'
+a cwft 'cd `depth`/ip/mss/mcf/2.1/stand_sim/mcf/testbench/tb'
+a cwfv 'cd `depth`/ip/mss/mcf/2.1/stand_sim/mcf/testbench/simv'
+a cwfp 'cd `depth`/ip/mss/mcf/2.1/regression/testplans'
+a cwfd 'cd `depth`/ip/mss/mcf/2.1/defs'
+# Qual
+a cwqe 'cd `depth`/ip/mss/qualeng/1.0/etc'
+a cwqr 'cd `depth`/ip/mss/qualeng/1.0/vmod/qualeng'
+a cwqp 'cd `depth`/ip/mss/qualeng/1.0/regression/testplans'
+a cwqt 'cd `depth`/ip/mss/qualeng/1.0/stand_sim/qualeng/testbench/tb'
+a cwqv 'cd `depth`/ip/mss/qualeng/1.0/stand_sim/qualeng/testbench/simv'
+a cwqs 'cd `depth`/ip/mss/qualeng/1.0/stand_sim/qualeng/stim'
+a cwqd 'cd `depth`/ip/mss/qualeng/1.0/defs'
+# NVLink
+a cwke 'cd `depth`/ip/mss/mssnvlink/1.1/etc'
+a cwkr 'cd `depth`/ip/mss/mssnvlink/1.1/vmod/mssnvlink'
+a cwkt 'cd `depth`/ip/mss/mssnvlink/1.1/stand_sim/mssnvlink/tb'
+a cwkv 'cd `depth`/ip/mss/mssnvlink/1.1/stand_sim/mssnvlink/sim'
+a cwkd 'cd `depth`/ip/mss/mssnvlink/1.1/defs'
+a cwtp 'cd `depth`/regression/testplans'
+a cwsv 'cd `depth`/ip/mss/smmu/2.0/stand_sim/private/smmu/testbench/sim'
+a cwsr 'cd `depth`/ip/mss/smmu/2.0/vmod/smmu'
+a cwhs 'cd `depth`/ip/mss/hub/2.0/stand_sim/mss_hub/stim'
+# SMMU
+a cwss 'cd `depth`/ip/mss/smmu/2.0/stand_sim/smmu/stim'
+a cwst 'cd `depth`/ip/mss/smmu/2.0/stand_sim/smmu/testbench/rtl'
+a cwsv 'cd `depth`/ip/mss/smmu/2.0/stand_sim/private/smmu/testbench/sim'
+a cwsb 'cd `depth`/ip/mss/smmu/2.0/bin'
+a cwse 'cd `depth`/ip/mss/smmu/2.0/etc'
+a cwsm 'cd `depth`/stand_sim/mc/smmu'
+a cwsd 'cd `depth`/ip/mss/smmu/2.0/defs'
+a cwsp 'cd `depth`/ip/mss/smmu/2.0/regression/testplans'
+# EMC
+a cwew 'cd `depth`/ip/mss/channel/1.0/simv/emc/tb'
+a cwer 'cd `depth`/ip/mss/channel/1.0/vmod/emc'
+a cwem 'cd `depth`/stand_sim/emc/testbench/rtl'
+a cwet 'cd `depth`/ip/mss/channel/1.0/stand_sim/emc_uvm/testbench/rtl'
+a cwev 'cd `depth`/ip/mss/channel/1.0/stand_sim/emc_uvm/testbench/simv'
+# Nitro
+a cwn  'cd `depth`/ip/inf/nitro/?.?'
+a cwnd 'cd `depth`/ip/inf/nitro/?.?/dvlib'
+a cwns 'cd `depth`/ip/inf/nitro/?.?/stand_sim'
+set easyjump_home = /home/nv/utils/stepstone/latest/easyjump
+if (-s $easyjump_home/bin/easyjump.tcsh) then
+        source $easyjump_home/bin/easyjump.tcsh $easyjump_home/bin
+endif
+
+########################################
+# PWA INSTALLS
+# pwxy pwa installs a work area location that makes sense for user
+########################################
+a p-i "pwa ip"
+a p-u "pwa uninstall"
+a pwar "p-i //hw/${MYBRANCH}/diag/testgen/config_rwmp/argFiles"
+a pwcm "p-i //hw/${MYBRANCH}/cmod/mc/tools"
+a pwcd "p-i //hw/${MYBRANCH}/cmod/mc/tools/drbc"
+a pwdm "p-i //hw/${MYBRANCH}/dvlib/mc/checkers"
+a pwin "p-i //hw/${MYBRANCH}/include"
+a pwvs "p-i //hw/${MYBRANCH}/vmodels/shared/systemVerilog/src"
+a pwtp "p-i //hw/${MYBRANCH}/regression/testplans"
+a pwtg "p-i //hw/${MYBRANCH}/diag/testgen"
+a pwvl "p-i //hw/${MYBRANCH}/vlib"
+# DBB
+a pwbe "p-i //hw/${MYBRANCH}/ip/socip/backbone_data/2.0/etc"
+a pwbr "p-i //hw/${MYBRANCH}/ip/socip/backbone_data/2.0/vmod"
+a pwbs "p-i //hw/${MYBRANCH}/ip/socip/backbone_data/2.0/stand_sim/backbone_data/stim"
+a pwbt "p-i //hw/${MYBRANCH}/ip/socip/backbone_data/2.0/stand_sim/backbone_data/testbench/env"
+a pwbv "p-i //hw/${MYBRANCH}/ip/socip/backbone_data/2.0/stand_sim/backbone_data/testbench/simv"
+a pwbp "p-i //hw/${MYBRANCH}/ip/socip/backbone_data/2.0/regression/testplans"
+a pwbd "p-i //hw/${MYBRANCH}/ip/socip/backbone_data/2.0/defs"
+# HUB
+a pwhb "p-i //hw/${MYBRANCH}/ip/mss/hub/2.0/bin"
+a pwhe "p-i //hw/${MYBRANCH}/ip/mss/hub/2.0/etc"
+a pwhr "p-i //hw/${MYBRANCH}/ip/mss/hub/2.0/vmod/hub"
+a pwhs "p-i //hw/${MYBRANCH}/ip/mss/hub/2.0/stand_sim/mss_hub/stim"
+a pwht "p-i //hw/${MYBRANCH}/ip/mss/hub/2.0/stand_sim/public/mss_hub/testbench/tb"
+a pwhv "p-i //hw/${MYBRANCH}/ip/mss/hub/2.0/stand_sim/private/mss_hub/testbench/sim"
+a pwhp "p-i //hw/${MYBRANCH}/ip/mss/hub/2.0/regression/testplans"
+a pwhd "p-i //hw/${MYBRANCH}/ip/mss/hub/2.0/defs"
+# MCF
+a pwfe "p-i //hw/${MYBRANCH}/ip/mss/mcf/2.1/etc"
+a pwfr "p-i //hw/${MYBRANCH}/ip/mss/mcf/2.1/vmod/mcf"
+a pwft "p-i //hw/${MYBRANCH}/ip/mss/mcf/2.1/stand_sim/mcf/testbench/tb"
+a pwfv "p-i //hw/${MYBRANCH}/ip/mss/mcf/2.1/stand_sim/mcf/testbench/sim"
+a pwfd "p-i //hw/${MYBRANCH}/ip/mss/mcf/2.1/defs"
+# NVLinkp-i
+a pwke "p-i //hw/${MYBRANCH}/ip/mss/mssnvlink/1.1/etc"
+a pwkr "p-i //hw/${MYBRANCH}/ip/mss/mssnvlink/1.1/vmod/mssnvlink"
+a pwkt "p-i //hw/${MYBRANCH}/ip/mss/mssnvlink/1.1/stand_sim/mssnvlink/testbench/tb"
+a pwkv "p-i //hw/${MYBRANCH}/ip/mss/mssnvlink/1.1/stand_sim/mssnvlink/testbench/sim"
+a pwkd "p-i //hw/${MYBRANCH}/ip/mss/mssnvlink/1.1/defs"
+# Qual
+a pwqe "p-i //hw/${MYBRANCH}/ip/mss/qualeng/1.0/etc"
+a pwqr "p-i //hw/${MYBRANCH}/ip/mss/qualeng/1.0/vmod/qualeng"
+a pwqs "p-i //hw/${MYBRANCH}/ip/mss/qualeng/1.0/stand_sim/qualeng/stim"
+a pwqt "p-i //hw/${MYBRANCH}/ip/mss/qualeng/1.0/stand_sim/qualeng/testbench/tb"
+a pwqv "p-i //hw/${MYBRANCH}/ip/mss/qualeng/1.0/stand_sim/qualeng/testbench/simv"
+a pwqp "p-i //hw/${MYBRANCH}/ip/mss/qualeng/1.0/regression/testplans"
+a pwqd "p-i //hw/${MYBRANCH}/ip/mss/qualeng/1.0/defs"
+# SMMU
+a pwsr "p-i //hw/${MYBRANCH}/ip/mss/smmu/2.0/vmod/smmu"
+a pwss "p-i //hw/${MYBRANCH}/ip/mss/smmu/2.0/stand_sim/smmu/stim"
+a pwst "p-i //hw/${MYBRANCH}/ip/mss/smmu/2.0/stand_sim/smmu/testbench/rtl"
+a pwsv "p-i //hw/${MYBRANCH}/ip/mss/smmu/2.0/stand_sim/private/smmu/testbench/sim"
+a pwsb "p-i //hw/${MYBRANCH}/ip/mss/smmu/2.0/bin"
+a pwse "p-i //hw/${MYBRANCH}/ip/mss/smmu/2.0/etc"
+a pwsm "p-i //hw/${MYBRANCH}/stand_sim/mc/smmu"
+a pwsd "p-i //hw/${MYBRANCH}/ip/mss/smmu/2.0/defs"
+# Clustep-i
+a pwmw "p-i //hw/${MYBRANCH}/ip/clusters/mss_cluster/1.1/simv/mpc/tb"
+a pwub "p-i //hw/${MYBRANCH}/ip/clusters/mss_cluster/1.1/bin"
+a pwue "p-i //hw/${MYBRANCH}/ip/clusters/mss_cluster/1.1/etc"
+a pwur "p-i //hw/${MYBRANCH}/ip/clusters/mss_cluster/1.1/vmod/mss"
+a pwut "p-i //hw/${MYBRANCH}/ip/clusters/mss_cluster/1.1/stand_sim/mtb/testbench/tb"
+a pwup "p-i //hw/${MYBRANCH}/ip/clusters/mss_cluster/1.1/regression/testplans"
+a pwuv "p-i //hw/${MYBRANCH}/ip/clusters/mss_cluster/1.1/stand_sim/mtb/testbench/simv"
+a pwus "p-i //hw/${MYBRANCH}/ip/clusters/mss_cluster/1.1/stand_sim/mtb/stim"
+a pwul "p-i //hw/${MYBRANCH}/ip/clusters/mss_cluster/1.1/dvlib/checkers"
+a pwpt "p-i //hw/${MYBRANCH}/ip/clusters/mss_cluster/1.1/stand_sim/mtb_perf/testbench/tb"
+a pwpv "p-i //hw/${MYBRANCH}/ip/clusters/mss_cluster/1.1/stand_sim/mtb_perf/testbench/simv"
+a pwat "p-i //hw/${MYBRANCH}/ip/socip/backbone_data/2.0/stand_sim/ntb_axicif/testbench/env"
+a pwav "p-i //hw/${MYBRANCH}/ip/socip/backbone_data/2.0/stand_sim/ntb_axicif/testbench/simv"
+a pwps "p-i //hw/${MYBRANCH}/ip/clusters/mss_cluster/1.1/stand_sim/mtb_perf/traces"
+# MCC
+a pwcb "p-i //hw/${MYBRANCH}/ip/mss/channel/1.0/bin"
+a pwce "p-i //hw/${MYBRANCH}/ip/mss/channel/1.0/etc"
+a pwcr "p-i //hw/${MYBRANCH}/ip/mss/channel/1.0/vmod/mc"
+a pwcd "p-i //hw/${MYBRANCH}/ip/mss/channel/1.0/defs"
+# MC
+a pwmb "p-i //hw/${MYBRANCH}/ip/mss/mc/4.0/bin"
+a pwme "p-i //hw/${MYBRANCH}/ip/mss/mc/4.0/etc"
+a pwmr "p-i //hw/${MYBRANCH}/ip/mss/mc/4.0/vmod/mc"
+a pwmd "p-i //hw/${MYBRANCH}/ip/mss/mc/4.0/defs"
+a pwml "p-i //hw/${MYBRANCH}/ip/mss/mc/4.0/dvlib/checkers"
+a pwew "p-i //hw/${MYBRANCH}/ip/mss/channel/1.0/simv/emc/tb"
+a pwer "p-i //hw/${MYBRANCH}/ip/mss/mc/4.0/vmod/emc"
+a pwet "p-i //hw/${MYBRANCH}/ip/mss/channel/1.0/stand_sim/emc_uvm/testbench/rtl"
+a pwev "p-i //hw/${MYBRANCH}/ip/mss/channel/1.0/stand_sim/emc_uvm/testbench/simv"
+
+########################################
+# PRJ/CLI
+# You would use these to switch between project, branches, clients
+########################################
+# set project
+a p-s "setenv MYPROJECT \!* && s-s"
+a set-project p-s
+# print project
+a p-p "echo MYPROJECT=${MYPROJECT}"
+# set client
+a c-s "setenv MYCLIENT \!* && s-s"
+a gb-s "setenv MYBRANCH \!* && s-s"
+a set-branch gb-s
+a gb-p "echo MYBRANCH=${MYBRANCH}"
+a gc-p 'pwa info | awk "/^PWA Root Directory: /{printf "\$"4}" | sed -e "s/.*genie\/src\//${MYBRANCH}_g-/"'
+# version client (CLI)
+a mycl "nvrun mycl"
+
+########################################
+# HUB/DBB
+########################################
+
+#Get client_name from cgid and vice-versa
+alias cgid 'cat /home/scratch.msstegra_t234/latest/hw/nvmobile/ip/clusters/mss_cluster/1.1/simv/mpc/tb/${MYPROJECT}/mpc_wrap.v | g \!:1 | g cgid'
+#Get pcid/cpid from cgid and vice-versa
+alias tsid 'cat `depth`/ip/mss/hub/2.0/dvlib/public/common/${MYPROJECT}/hub_cfgs.vh | grep calc_cgid | grep \!:1'
+#Get tsa_chain number from PC name and vice-versa
+alias ntsa 'cat `depth`/ip/socip/backbone_data/2.0/tools/pipeline/tsa_golden_pd_map.cfg | grep "\!:1\|tsa_chain" '
+
+########################################
+# MAKE
+# Make utilities for various targets
+########################################
+a mkin "nvmk -c."
+a mkhr '`depth`/bin/make'
+a mktr "echo ${MYPROJECT} | nvmk tree.make; echo 'export PROJECT_TEAM := ${MYPROJECTTAG}' >> tree.make"
+a mkt "cw && bin/t_make"
+a mktb "mkt \!* | tee .tmake.out"
+a mktc "mkt -no_retry -clean"
+a mktd "mkt -no_retry -clobber"
+# Status of last run
+a mks 'ls `depth`'"/.tmake_*build/\!*.log | xv"
+a mksp "mks ${MYPROJECT}*mtb_perf*"
+a gkb "gsim -prebuild -variant ${MYPROJECT} -tb"
+a mygmk "gmk -variant ${MYPROJECT}"
+a mygverdi "gverdi -variant ${MYPROJECT}"
+a gkab "gkb axicif"
+a gkbb "gkb backbone_data"
+a gkcb "gkb channel"
+a gkhb "gkb mss_hub"
+a gkqb "gkb qualeng"
+a gksb "gkb smmu"
+a gkpb "gkb mtb_perf"
+a gkmb "gkb mtb"
+a gkeb "gkb emc_uvm"
+a ukb "umake \!*"
+a uko "umake \!\!:1 -only \!\!:1 \!:2*"
+a ukao "uko ${MYPROJECT}_backbone_data1-standsim_axicif_simv.build"
+a ukab "ukb ${MYPROJECT}_backbone_data1-standsim_axicif_simv.build"
+a ukbo "uko ${MYPROJECT}_backbone_data1-standsim_backbone_data_simv.build"
+a ukbb "ukb ${MYPROJECT}_backbone_data1-standsim_backbone_data_simv.build"
+a ukco "uko ${MYPROJECT}_mc32-standsim_mc_channel_simv.build"
+a ukcb "ukb ${MYPROJECT}_mc32-standsim_mc_channel_simv.build"
+a ukeo "uko ${MYPROJECT}_mc32-standsim_emc_uvm_testbench_simv.build"
+a ukeb "ukb ${MYPROJECT}_mc32-standsim_emc_uvm_testbench_simv.build"
+a ukfo "uko ${MYPROJECT}_mcf10-standsim_mcf_simv.build"
+a ukfb "ukb ${MYPROJECT}_mcf10-standsim_mcf_simv.build"
+a ukpo "uko ${MYPROJECT}_mss_cluster11-standsim_mtb_perf_simv.build"
+a ukpb "ukb ${MYPROJECT}_mss_cluster11-standsim_mtb_perf_simv.build"
+a ukmo "uko ${MYPROJECT}_mss_cluster11-standsim_mtb_simv.build"
+a ukmb "ukb ${MYPROJECT}_mss_cluster11-standsim_mtb_simv.build"
+a ukho "uko ${MYPROJECT}_hub10-standsim_mss_hub_simv.build"
+a ukhb "ukb ${MYPROJECT}_hub10-standsim_mss_hub_simv.build"
+a ukqo "uko ${MYPROJECT}_qualeng10-standsim_qualeng_simv.build"
+a ukqb "ukb ${MYPROJECT}_qualeng10-standsim_qualeng_simv.build"
+a ukso "uko ${MYPROJECT}_smmu1-standsim_smmu.build"
+a uksb "ukb ${MYPROJECT}_smmu1-standsim_smmu.build"
+
+########################################
+# MAKE
+########################################
+a make '`depth`/bin/make'
+a tree.make "echo ${MYPROJECT} | nvmk tree.make; echo 'export PROJECT_TEAM := ${MYPROJECTTAG}' >> tree.make"
+a t_make "cd `depth` && bin/t_make \!* | tee .tmake.out"
+a t_make_clean "t_make -no_retry -clean"
+a t_make_clobber "t_make -no_retry -clobber"
+# Status of last run
+a mks 'ls `depth`'"/.tmake_*build/\!*.log | xv"
+# List last few targets
+a mkl 'll `depth`'"/.tmake_*build/*.log | tail -5"
+# Only/Build targets
+a t_make_only "t_make -no_retry -only"
+a t_make_build "t_make -no_retry -build"
+
+########################################
+# REGRESSIONS
+########################################
+a r "nvrun tgen_rwmp.pl -testlistType rwmp -chip ${MYPROJECT} --dbtag tree=${MYPROJECT}"
+a rn "b-b nvrun run_nex --skipVRTParsing --tgen_opt "\""--dbtag tree=${MYPROJECT}"\"
+a gr "gsim -d -variant ${MYPROJECT} -sd sim -- tgen_rwmp.pl -testlistType rwmp -chip ${MYPROJECT} --dbtag tree="'`gc-p`'
+a grn "gsim -d -noprebuild -variant ${MYPROJECT} -sd sim -- run_nex -P ${MYPROJECT} --skipVRTParsing --tgen_opt '--dbtag tree="'`gc-p`'"'"
+# run-tb <level> <folder>
+# ex. run-smmu lvl17 trying_def_change
+a nongenie-run-axicif-example-only "rn --skipVRTParsing --config ip/socip/backbone_data/2.0/verif_plan/axicif_standsim.ini axicif_standsim --cmd "\""'\!\!:1' in T['tags']"\"" --tgen_opt '-target RS_UNIT_NTB_AXICIF --dbtag outdir=atb_\!\!:1_\!\!:2' --batch "'`depth`'"/sim/${MYPROJECT}_atb_\!\!:1_\!:2*"
+a run-axicif "grn --skipVRTParsing --config ip/socip/backbone_data/2.0/verif_plan/axicif_standsim.ini axicif_standsim --cmd "\""'\!\!:1' in T['tags']"\"" --tgen_opt '-target RS_UNIT_NTB_AXICIF --dbtag outdir=atb_\!\!:1_\!\!:2' --batch "'`genie-depth`'"/sim/${MYPROJECT}_atb_\!\!:1_\!:2*"
+a run-backbone "grn --skipVRTParsing --config ip/socip/backbone_data/2.0/verif_plan/backbone_data_standsim.ini backbone_data_standsim --cmd "\""'\!\!:1' in T['tags']"\"" --tgen_opt '-target RS_UNIT_BACKBONE_DATA --dbtag outdir=dbb_\!\!:1_\!\!:2' --batch "'`genie-depth`'"/sim/${MYPROJECT}_dbb_\!\!:1_\!:2*"
+a run-hub "grn --skipVRTParsing --config ip/mss/hub/2.0/regression/testplans/mss_hub_standsim.ini mss_hub_standsim --cmd "\""'\!\!:1' in T['tags']"\"" --tgen_opt "\""-target RS_UNIT_MSS_HUB --dbtag outdir=htb_\!\!:1_\!\!:2"\"" --batch "'`genie-depth`'"/sim/${MYPROJECT}_htb_\!\!:1_\!:2*"
+a run-nvlink "grn --skipVRTParsing --config ip/mss/mssnvlink/3.0/regression/testplans/mss_nvlink_standsim.ini mss_nvlink_standsim --cmd "\""'\!\!:1' in T['tags']"\"" --tgen_opt "\""-target RS_UNIT_MSS_NVLINK --dbtag outdir=ktb_\!\!:1_\!\!:2"\"" --batch "'`genie-depth`'"/sim/${MYPROJECT}_ktb_\!\!:1_\!:2*"
+a run-ocu "grn --skipVRTParsing --config ip/mss/mcf/2.1/regression/testplans/ocu_standsim.ini ocu_standsim --cmd "\""'\!\!:1' in T['tags']"\"" --target ocu --tgen_opt "\""-target RS_UNIT_MSS_OCU --dbtag outdir=otb_\!\!:1_\!\!:2"\"" --batch "'`genie-depth`'"/sim/${MYPROJECT}_otb_\!\!:1_\!:2*"
+a run-mcf "grn --skipVRTParsing --config ip/mss/mcf/2.1/regression/testplans/mcf_standsim.ini mcf_standsim --cmd "\""'lvl\!\!:1' in T['tags']"\"" --target mcf --tgen_opt "\""--dbtag outdir=ftb_\!\!:1_\!\!:2"\"" --batch "'`genie-depth`'"/sim/${MYPROJECT}_ftb_\!\!:1_\!:2*"
+a run-qual "grn --skipVRTParsing --config ip/mss/qualeng/1.0/regression/testplans/qualeng_standsim.ini qualeng_standsim --cmd "\""'\!\!:1' in T['tags']"\"" --tgen_opt "\""-target RS_UNIT_QUALENG --dbtag outdir=qtb_\!\!:1_\!\!:2"\"" --batch "'`genie-depth`'"/sim/${MYPROJECT}_qtb_\!\!:1_\!:2*"
+a run-smmu "grn --skipVRTParsing --config ip/mss/smmu/2.0/regression/testplans/mss_smmu_standsim.ini mss_smmu_standsim --cmd "\""'\!\!:1' in T['tags']"\"" --target smmu --tgen_opt "\""-target RS_UNIT_MSS_SMMU --dbtag outdir=stb_\!\!:1_\!\!:2"\"" --batch "'`genie-depth`'"/sim/${MYPROJECT}_stb_\!\!:1_\!:2*"
+a run-mtb "grn --skipVRTParsing --config ip/clusters/mss_cluster/2.0/regression/testplans/mtb_standsim.ini mtb_standsim --cmd "\""'lvl\!\!:1' in T['tags']"\"" --tgen_opt "\""-target RS_UNIT_MTB --dbtag outdir=mtb_\!\!:1_\!\!:2"\"" --batch "'`genie-depth`'"/sim/${MYPROJECT}_mtb_\!\!:1_\!:2*"
+a run-mtbperf "grn --skipVRTParsing --config ip/clusters/mss_cluster/1.1/regression/testplans/mtbperf_standsim.ini mtbperf_standsim --cmd "\""'lvl\!\!:1' in T['tags']"\"" --tgen_opt "\""-target RS_UNIT_MTBPERF --dbtag outdir=ptb_\!\!:1_\!\!:2"\"" --batch "'`genie-depth`'"/sim/${MYPROJECT}_ptb_\!\!:1_\!:2*"
+a run-channel 'echo THIS ALIAS NEEDS UPDATING; gr -target RS_UNIT_MSS_CHANNEL -level mss_channel_standsim:\!\!:1 --dbtag outdir=ctb_\!\!:1_\!\!:2 -outdir '"${MYPROJECT}_ctb_\!\!:1_\!:2*"
+a run-mtb-sanity 'rmss \!\!:1 -tb mtb \!:2*'
+a run-mtb-sanity-old 'run-mtb 17'
+a run-ocu-sanity 'rmss \!\!:1 -tb ocu \!:2*'
+a run-ocu-sanity-old 'run-ocu sanity'
+a run-backbone-sanity 'rmss \!\!:1 -tb dbb \!:2*'
+a run-backbone-sanity-old 'run-backbone sanity'
+a run-hub-sanity 'rmss \!\!:1 -tb hub \!:2*'
+a run-hub-sanity-old 'run-hub 17'
+a run-mcf-sanity 'rmss \!\!:1 -tb mcf \!:2*'
+a run-mcf-sanity-old 'run-mcf 17'
+a run-qual-sanity 'rmss \!\!:1 -tb qualeng \!:2*'
+a run-qual-sanity-old 'run-qual 17'
+a run-smmu-sanity 'rmss \!\!:1 -tb smmu \!:2*'
+a run-smmu-sanity-old 'run-smmu 17'
+a run-emc-sanity 'rmss \!\!:1 -tb emc \!:2*'
+a run-emc-sanity-old 'run-smmu 17'
+a run-mtbperf-sanity 'rmss \!\!:1 -tb mtbperf \!:2*'
+a run-mtbperf-sanity-old 'run-mtbperf 17'
+a run-channel-sanity 'rmss \!\!:1 -tb mc_emc_channel \!:2*'
+a run-channel-sanity-old 'run-smmu 17'
+
+########################################
+# REGRESSIONS
+########################################
+# genie-rerun-waves /path/to/testgen/test/directory/test.sh
+a gr-r gr-rw
+a gr-rb "rf \!\!:1.rerun_${USER}_\!\!:2.sh && cat \!\!:1 | sed -e 's/-o testout/-waves -noClean -dir \/home\/scratch.msswaves_${MYPROJECT}\/bugs\/\!\!:2 -o \/home\/scratch.msswaves_${MYPROJECT}\/bugs\/\!\!:2\/testout  -rtlarg +UVM_VERBOSITY=UVM_HIGH/' -e 's/.*nvmobile[_t0-9]*\/bin\//gsim -d -sd \x60pwd\x60 -- /' > \!\!:1.rerun_${USER}_\!\!:2.sh && chmod +x \!\!:1.rerun_${USER}_\!\!:2.sh && b-v \!\!:1.rerun_${USER}_\!\!:2.sh"
+a gr-ro "rf \!*.rerun_${USER}_only.sh && cat \!* | sed -e 's/-o testout/-noClean -dir rerun_${USER}_only -o rerun_${USER}_only\/testout/' -e 's/.*nvmobile[_t0-9]*\/bin\//gsim -d -sd \x60pwd\x60 -- /' > \!*.rerun_${USER}_only.sh && chmod +x \!*.rerun_${USER}_only.sh && b-v \!*.rerun_${USER}_only.sh"
+a genie-rerun-only gr-ro
+a gr-rd "rf \!*.rerun_${USER}_debug.sh && cat \!* | sed -e 's/-o testout/-noClean -dir rerun_${USER}_debug -o rerun_${USER}_debug\/testout  -rtlarg +UVM_VERBOSITY=UVM_HIGH/' -e 's/.*nvmobile[_t0-9]*\/bin\//gsim -d -sd \x60pwd\x60 -- /' > \!*.rerun_${USER}_debug.sh && chmod +x \!*.rerun_${USER}_debug.sh && b-v \!*.rerun_${USER}_debug.sh"
+a genie-rerun-debug gr-rd
+a gr-rg "rf \!*.rerun_${USER}_gui.sh && cat \!* | sed -e 's/-o testout/-noClean -dir rerun_${USER}_gui -o rerun_${USER}_gui\/testout -rtlarg -gui  -rtlarg +UVM_VERBOSITY=UVM_HIGH/' -e 's/.*nvmobile[_t0-9]*\/bin\//gsim -d -sd \x60pwd\x60 -- /' > \!*.rerun_${USER}_gui.sh && chmod +x \!*.rerun_${USER}_gui.sh && b-v \!*.rerun_${USER}_gui.sh"
+a genie-rerun-gui gr-rg
+a gr-rw "rf \!*.rerun_${USER}_waves.sh && cat \!* | sed -e 's/-o testout/-waves -noClean -dir rerun_${USER}_waves -o rerun_${USER}_waves\/testout  -rtlarg +UVM_VERBOSITY=UVM_HIGH/' -e 's/.*nvmobile[_t0-9]*\/bin\//gsim -d -sd \x60pwd\x60 -- /' > \!*.rerun_${USER}_waves.sh && chmod +x \!*.rerun_${USER}_waves.sh && b-v \!*.rerun_${USER}_waves.sh"
+a genie-rerun-waves gr-rw
+
+
+########################################
+# CUSTOM ALIASES
+########################################
+
+#alias ghostview "/home/ghostview/bin/ghostview -bg gray90"
+
+# For pulling in dotfiles from personal Github repo
+alias dotfiles "git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
+
+# Force python3 to use the one in /home/utils/Python
+alias python3 "/home/utils/Python-3.9.1/bin/python3"
+
+# Force gcc and cc to use the latest version of C compiler
+alias gcc "/home/utils/gcc-13.2.0/bin/gcc"
+alias cc "/home/utils/gcc-13.2.0/bin/gcc"
+
+# Force new version of git to be used
+alias git "/home/utils/git-2.38.0/bin/git"
+
+# For correct c to be picked up
+alias nvim 'setenv CC clang; setenv CXX clang++; setenv LDFLAGS "-static-libgcc -static-libstdc++"; command nvim'
+
+# Alias nvim to use clang c for c compiler
+# alias nvim="CC=clang CXX=clang++ LDFLAGS='-static-libgcc -static-libstdc++' command nvim"
+
+# Set tmux alias to support colour, italics and UTF-8
+alias tmux 'setenv TERM screen-256color-bce; /home/utils/tmux-3.2a/bin/tmux -2 -u'
+
+# Using ripgrep to search for files within a directory with "rgf"
+alias rgf "rg --files | rg"
+
+# For navagating into FEC, and executing FEC scripts
+alias gotochanlsyn 'cd /home/scratch.mss_synth/runs/; cd `ls | grep mss_channel_weekly | tail -1` ; cd hw/nvip/ip/mss/channel_top/1.0/syn/mss_channel/ ; ejod ; cd syn_*_tb500m'
+alias gotochancsyn 'cd /home/scratch.mss_synth/runs/; cd `ls | grep mss_channel_weekly | tail -3 | head -n 1` ; cd hw/nvip/ip/mss/channel_top/1.0/syn/mss_channel/ ; ejod ; cd syn_*_tb500m'
+alias dumpchanfmresults 'gotochancsyn ; /home/scratch.viho_mobile/genie/dev/dev_inf_astris_fec/astris/bin/formality_summary --build_dir ./ --output_dir ./../ --max_points_to_display 9999'
+alias gotoemclsyn 'cd /home/scratch.mss_synth/runs/; cd `ls | grep emc_weekly | tail -1` ; cd hw/nvip/ip/mss/channel_top/1.0/syn/emc/ ; ejod ; cd syn_*_tb500m'
+alias gotoemccsyn 'cd /home/scratch.mss_synth/runs/; cd `ls | grep emc_weekly | tail -3 | head -n 1` ; cd hw/nvip/ip/mss/channel_top/1.0/syn/emc/ ; ejod ; cd syn_*_tb500m'
+alias dumpemcfmresults 'gotoemccsyn ; /home/scratch.viho_mobile/genie/dev/dev_inf_astris_fec/astris/bin/formality_summary --build_dir ./ --output_dir ./../ --max_points_to_display 9999'
+
+# For navigating into specific common folders within the channel_top tree
+alias gorc 'ejtot; cd ip/mss/channel_top/1.0/reg_calc_channel/include/channel'
+alias gowb 'ejtot; cd ip/mss/channel_top/1.0/nvboot_stitched/tests/wb0_code_test'
+
+# For opening verdi, and load a .fsdb file
+# Run with 'sverdi channel_chi -ssf reprod_*_/ssrun-0.fsdb'
+alias rverdi "qsub -q interactive_asic_32G_14D -Is 'nvrun -project tb500m verdi -ssy -ssv -ssz -nologo -simflow -simBin outdir/vot/ip/mss/channel_top/1.0/stand_sim/\!\!:1/testbench/simv/tb500m/\!\!:1.simv \!\!:2*' "
+
+# For running channel_chi and channel_emctb presubmit
+alias rpresubmit "ejtot; p4 opened; nvrun presubmit -chip tb500m -tb 'channel_chi channel_emctb'"
+
+# For listing the commands ran in 'nvrun presubmit -chip tb500m -tb "channel_chi channel_emctb'"
+alias rlistpresubmit "ejtot; nvrun presubmit -list -chip tb500m -tb 'channel_chi channel_emctb'"
+
+# For running gtask as2_sanity
+alias rgtask "ejtot; gtask as2_simt_sanity"
+
+# For bringing all the files which currently don't belong to a changelist to that changelist
+# Run with "p4bringundercl 8037211"
+alias p4bringundercl "p4 opened; p4 opened -s | grep -v \!\!:1 | awk '{print $1}' | xargs p4 reopen -c \!\!:1 ; p4 opened "
+
+# For opening p4v on a specific file (only work on VNC), need to include the revision number as well as filepath
+# Run with "p4vfileblame //hw/nvip/*#67" on VNC in a pwa workspace
+alias p4vfileblame "p4v -cmd 'annotate \!\!:1 '"
+
+# Use fzf to fuzzy cd into a directory
+# The use of single quotes rather than double quotes as the outermost quotes is important. Without it the order of statement evaluation will be wrong
+# See https://home.adelphi.edu/sbloch/class/archive/271/fall2005/notes/aliases.html
+#alias fcd 'set dir = `find * -type d | fzf --preview "tree -C {} | head -200"`; cd $dir'
+alias fcd 'set nvip_root_dir = `depth`; cd `find $nvip_root_dir * -type d -not -path "**/outdir/**" | fzf --preview "tree -C {} | head -200"`; pwd'
+
+# Use fzf to fuzzy find a file and open it in nvim
+alias ff 'set file = `rg . --files | fzf --preview "bat --color=always {}" --preview-window "-3"`; if ( "$file" != "" ) nvim $file'
+
+# Use fzf to fuzzy grep in current directory, then open selected files in nvim
+alias fg 'set files = `rg . | fzf -m | cut -d':' -f 1`; if ( "$files" != "") nvim $files'
+
+# Use fzf to run p4 opened, then open selected files in nvim
+#alias p4o 'set files = p4 opened | fzf -m --preview "bat --color=always {}" --preview-window "-3" | cut -d\# -f 1'
+#alias p4o 'set files = `p4 opened -s | fzf -m --preview "bat --color=always {}" --preview-window "-3" | `awk "{print $1}"``; echo $files'
+#alias p4o 'set files = `p4 opened -s | fzf -m | awk "{print \$1}"`'
+#alias p4o 'set files = `p4 opened -s | fzf | xargs -I {} echo {} | awk "{print \$1}"`'
+#alias p4o 'set files = `p4 opened | fzf | awk -F "#" "{print $1}"`; echo $files'
+#alias p4o "p4 opened -s |  awk '{print $1}' | fzf"
+#alias p4o "set nvip_root_dir = `depth`; set files = `p4 opened -s | awk '{print "\$"1}' | sed 's|^//hw/nvip/|$nvip_root_dir/|'`" #GOOD
+#alias p4o "set nvip_root_dir = `depth`; p4 opened -s | awk '{print "\$"1}' | sed 's|^//hw/nvip/|$nvip_root_dir/|' | fzf -m | xargs -r nvim" #GOOD
+alias p4o 'set nvip_root_dir = `depth`; p4 opened -s | awk "{print "\$"1}" | sed "s|^//hw/nvip/|$nvip_root_dir/|" | fzf -m --preview "bat --color=always {}" --preview-window "-3" | xargs -r nvim'
+
+
+
+
+
+########################################
+# CUSTOV ENV VARIABLES
+########################################
+
+# setenv NV17 /home/scratch.${USER}/nv17
+
+########################################
+# EASY JUMP
+########################################
+
+set easyjump_home = /home/nv/utils/stepstone/latest/easyjump
+if (-s $easyjump_home/bin/easyjump.tcsh) then
+source $easyjump_home/bin/easyjump.tcsh $easyjump_home/bin
+endif
+
+########################################
+# TCSH autocomplete
+########################################
+
+set filec
+set autolist = ambiguous # Don't want list when autocomplete
+set complete = enhance   # Don't want list when autocomplete
+
+########################################
+# CUSTOM PATHS
+########################################
+
+# the ":q" suffix in $path quotes the previous path names, so we can handle
+# path directories that contain spaces.
+
+# set path = ( \
+#       /home/utils/gcc-4.1.0/bin \
+#       $path:q \
+# )
+
+set path = ( \
+        /home/utils/tmux-3.2a/bin \
+        /home/utils/neovim-0.10.0/bin \
+  /home/utils/node-v16.16.0/bin \
+  /home/utils/gcc-13.2.0/bin \
+  /home/utils/Python-3.9.1/bin \
+  /home/utils/ripgrep-14.0.3/bin \
+  /home/utils/git-2.38.0/bin/ \
+  /home/utils/llvm-14.0.0/bin \
+  /home/utils/make-4.3/bin \
+  /home/utils/llvm-14.0.0/bin \
+  /home/utils/tree-sitter-0.20.6/bin \
+  /home/.locals/bin \
+  /home/utils/Python-3.11.0/bin \
+  /home/utils/bash-5.2/bin \
+  /home/utils/tkdiff-4.3.4 \
+  /home/viho/.local/bin \
+  /home/utils/verible/verible-v0.0-3377-g167f23d2/bin \
+  /home/utils/glibc-2.31/bin \
+  /home/utils/fd-8.7.1/bin \
+  /home/utils/valgrind-3.23.0/bin \
+  /home/utils/gdb-15.1/bin/ \
+  /home/utils/chrome-92.0.4515.107/usr/bin/ \
+  /home/scratch.viho_mobile/genie/dev/dev_inf_astris_fec/astris/bin/ \
+  /home/utils/fzf-0.58.0/bin/ \
+  /home/utils/bat-0.23.0/bin/ \
+  $path:q \
+)
