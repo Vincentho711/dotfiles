@@ -20,9 +20,9 @@ return {
       -- Specify the clangd version to be used by path
       -- Otherwise, the default clangd installed in /home/viho/.local/share/nvim/mason/bin/clangd
       -- will have an older version of glibc which causes an error
-      -- cmd = {
-      -- "/home/utils/llvm-14.0.0/bin/clangd", -- Specify the path to clangd
-      -- },    -- In the future, we can add the nvboot_common path such that definitions can be found by clangd LSP
+      cmd = {
+      "/home/utils/llvm-14.0.0/bin/clangd", -- Specify the path to clangd
+      },    -- In the future, we can add the nvboot_common path such that definitions can be found by clangd LSP
     })
   end,
 }
