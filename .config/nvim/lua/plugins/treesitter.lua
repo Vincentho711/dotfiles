@@ -22,7 +22,12 @@ return {
   ---@type TSConfig
   ---@diagnostic disable-next-line: missing-fields
   opts = {
-    highlight = { enable = true },
+    highlight = {
+      enable = true,
+      disable = {
+        "verilog",  -- Use Verible instead of default verilog parser
+      }
+    },
     indent = { enable = true },
     ensure_installed = {
       "bash",
@@ -77,16 +82,27 @@ return {
     end
     require("nvim-treesitter.configs").setup(opts)
 
+    -- Config custom local treesitter parser
+    -- Verible
+    local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
+    parser_config.verible = {
+      install_info = {
+        url = "~/.local/share/nvim/mason/bin/verible-verilog-syntax" -- Installed along with Verible LSP in Mason
+      },
+      filetype = {"verilog", "systemverilog"}
+    }
+    vim.treesitter.language.register("verible", {"verilog", "systemverilog" })
+
     -- Set up custom filetypes mappings based on file extension
     vim.filetype.add({
       extension = {
         v = "verilog",
         vs = "verilog",
         vx = "verilog",
-        svx = "verilog",
-        sv = "verilog",
+        svx = "systemverilog",
+        sv = "systemverilog",
         vh = "verilog",
-        svh = "verilog",
+        svh = "systemverilog",
         vxh = "verilog",
         out = "sh",
       },
