@@ -133,8 +133,8 @@ a t "touch"
 a cnt "\!* | wc -l"
 a fi "find ."
 a fin "fi -name"
-a v "${MYEDITOR}"
-a vi "${MYEDITOR}"
+# a v "${MYEDITOR}"     # Disable binding v to nvim
+# a vi "${MYEDITOR}"    # Disable binding vi to nvim
 # a vim "${MYEDITOR}"   # Disable binding vim to nvim
 # a gvim "${MYEDITOR}"  # Disable binding gvim to nvim
 a c "clear"
