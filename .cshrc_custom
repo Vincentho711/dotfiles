@@ -135,8 +135,8 @@ a fi "find ."
 a fin "fi -name"
 a v "${MYEDITOR}"
 a vi "${MYEDITOR}"
-a vim "${MYEDITOR}"
-a gvim "${MYEDITOR}"
+# a vim "${MYEDITOR}"   # Disable binding vim to nvim
+# a gvim "${MYEDITOR}"  # Disable binding gvim to nvim
 a c "clear"
 a q "exit"
 a s "source"
