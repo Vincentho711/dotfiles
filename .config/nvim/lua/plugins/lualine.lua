@@ -88,6 +88,9 @@ return {
               end
             end,
           },
+          {
+            "filetype"
+          },
         },
         lualine_y = {
           { "progress", separator = " ", padding = { left = 1, right = 0 } },
