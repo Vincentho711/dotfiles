@@ -91,19 +91,19 @@ return {
       },
       filetype = {"verilog", "systemverilog"}
     }
-    vim.treesitter.language.register("verible", {"verilog", "systemverilog" })
+    vim.treesitter.language.register("verible", {"verilog", "systemverilog", "viva"})
 
     -- Set up custom filetypes mappings based on file extension
     vim.filetype.add({
       extension = {
         v = "verilog",
-        vs = "verilog",
-        vx = "verilog",
-        svx = "systemverilog",
+        vs = "viva",
+        vx = "viva",
+        svx = "viva",
         sv = "systemverilog",
-        vh = "verilog",
-        svh = "systemverilog",
-        vxh = "verilog",
+        vh = "viva",
+        svh = "viva",
+        vxh = "viva",
         out = "sh",
       },
       -- Set up custome filetypes mappings based on filename

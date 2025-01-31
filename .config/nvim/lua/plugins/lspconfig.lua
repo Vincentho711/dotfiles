@@ -9,6 +9,7 @@ return {
         return vim.loop.cwd() -- Use the current working directory as the root
       end,
       -- Additional configuration options can go here
+      filetypes = { "systemverilog", "verilog" }
     })
 
     -- Setup clangd LSP with custom root_dir

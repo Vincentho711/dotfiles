@@ -3,7 +3,10 @@
 
 " verilog superset
 
-source $VIMRUNTIME/syntax/verilog.vim
+" source $VIMRUNTIME/syntax/verilog.vim
+
+" Read in SystemVerilog syntax files
+source $VIMRUNTIME/syntax/systemverilog.vim
 unlet b:current_syntax
 
 " include perl
@@ -15,17 +18,15 @@ syn include @VivaPerl   $VIMRUNTIME/syntax/perl.vim
 syn region  vivaGuts    start="&Ports\|&Wires\|&Regs\|&Sups\|&Ints"hs=e+1 end=";"he=s-1 keepend
 syn region  vivaFunc    start="&Ports\|&Wires\|&Regs\|&Sups\|&Ints" end=";" contains=vivaGuts keepend
 
-syn region  vivaGuts    start="&Instance"hs=e+1 end=";"he=s-1 keepend
-syn region  vivaFunc    start="&Instance" end=";" contains=vivaGuts keepend
+syn match   vivaGuts    "&Instance"
 
 syn region  vivaGuts    start="&Dangles\|&Contenders\|&Terminates"hs=e+1 end=";"he=s-1 keepend
 syn region  vivaFunc    start="&Dangles\|&Contenders\|&Terminates" end=";" contains=vivaGuts keepend
 
 syn match   vivaConn    "\s\(-nowarn\|-fresh\|-final\|-input\|-output\|-inout\|-range\|-snap\|-none\)\s" contained
-syn region  vivaGuts    start="&Connect"hs=e+1 end=";"he=s-1 contains=vivaConn keepend
-syn region  vivaFunc    start="&Connect" end=";" contains=vivaGuts keepend
+syn match   vivaConnect "&Connect"
 
-syn match   vivaToff  "\s\(-nowarn\|-fresh\|-final\|-input\|-output\|-inout\|-low\|-high\)\s" contained
+syn match   vivaToff    "\s\(-nowarn\|-fresh\|-final\|-input\|-output\|-inout\|-low\|-high\)\s" contained
 syn region  vivaGuts    start="&Terminate "hs=e+1 end=";"he=s-1 contains=vivaToff keepend
 syn region  vivaFunc    start="&Terminate " end=";" contains=vivaGuts keepend
 
@@ -37,12 +38,10 @@ syn match   vivaFrgt    "\s\(declare\|dangle_no_snk\|dangle_no_src\|dangle\|cont
 syn region  vivaGuts    start="&Forget"hs=e+1 end=";"he=s-1 contains=vivaFrgt keepend
 syn region  vivaFunc    start="&Forget" end=";" contains=vivaGuts keepend
 
-syn region  vivaGuts    start="&Clock"hs=e+1 end=";"he=s-1 keepend
-syn region  vivaFunc    start="&Clock" end=";" contains=vivaGuts keepend
+syn match   vivaGuts    "&Clock"
 
 syn match   vivaRest    "\s\(high\|low\|posedge\|negedge\)\s" contained
-syn region  vivaGuts    start="&Reset"hs=e+1 end=";"he=s-1 contains=vivaRest keepend
-syn region  vivaFunc    start="&Reset" end=";" contains=vivaGuts keepend
+syn match   vivaGuts    "&Reset"
 
 syn match   vivaAlwy    "\(-name\|posedge\|negedge\|\sor\s\)" contained
 syn region  vivaGuts    start="&Always"hs=e+1 end=";"he=s-1 contains=vivaAlwy keepend
@@ -89,8 +88,7 @@ syn match   vivaSpys    "\s\(on\|off\|ON\|OFF\)\s\(\w\+\)\s" contained
 syn region  vivaGuts    start="&Spyglass"hs=e+1 end=";"he=s-1 contains=vivaSpys keepend
 syn region  vivaFunc    start="&Spyglass" end=";" contains=vivaGuts keepend
 
-syn region  vivaGuts    start="&Vector"hs=e+1 end=";"he=s-1 keepend
-syn region  vivaFunc    start="&Vector" end=";" contains=vivaGuts keepend
+syn match   vivaVec    "&Vector"
 
 syn match   vivaViva   "\(push\|pop\)" contained
 syn match   vivaViva   "\(depend_parser_off\|depend_parser_on\)" contained
@@ -119,29 +117,38 @@ syn region  vivaFunc    start="&Attachment\|&Attach" end=";" contains=vivaGuts k
 syn region  vivaPsub    start=/::\w\+/hs=s+2 end="[^\l]"he=s-1 keepend
 syn region  vivaPlug    start=/::\w\+/ end="[^\l]" contains=vivaPsub keepend
 
+syn region vivaAssertPsub  start="::assert\>" end="[,;]" keepend
+syn region vivaAssertPlug  start="::assert\>" end="[,;]" contains=vivaAssertPsub keepend
+
+syntax match vivaStatement /#\s*\(\if\s\+defined\|ifdef\|ifndef\|if\|else\|endif\|define\)\s*\>/
+
 " highlight colors
 
-hi link vivaGuts normal
+hi def link vivaGuts       Statement
+hi def link vivaFunc       Statement
+hi def link vivaConn       Statement
+hi def link vivaConnect    Statement
+hi def link vivaFrce       Statement
+hi def link vivaFrgt       Statement
+hi def link vivaRest       Statement
+hi def link vivaAlwy       Statement
+hi def link vivaDire       Statement
+hi def link vivaViva       Statement
+hi def link vivaShll       Statement
+hi def link vivaVec        Statement
 
-hi vivaFunc ctermfg=darkgreen guifg=darkgreen
+hi def link vivaDsyn       Statement
+hi def link vivaVeri       Statement
+hi def link vivaLeda       Statement
+hi def link vivaSpys       Statement
 
-hi vivaConn ctermfg=brown     guifg=brown
-hi vivaFrce ctermfg=brown     guifg=brown
-hi vivaFrgt ctermfg=brown     guifg=brown
-hi vivaRest ctermfg=brown     guifg=brown
-hi vivaAlwy ctermfg=brown     guifg=brown
-hi vivaDire ctermfg=brown     guifg=brown
-hi vivaViva ctermfg=brown     guifg=brown
-hi vivaShll ctermfg=brown     guifg=brown
+hi def link vivaPlug       Statement
+hi def link vivaPsub       Statement
+hi def link vivaAssertPsub Define
+hi def link vivaAssertPlug Statement
 
-hi vivaDsyn ctermfg=brown     guifg=brown
-hi vivaVeri ctermfg=brown     guifg=brown
-hi vivaLeda ctermfg=brown     guifg=brown
-hi vivaSpys ctermfg=brown     guifg=brown
-
-hi vivaPlug ctermfg=brown    guifg=brown
-hi vivaPsub ctermfg=darkgreen guifg=darkgreen
-
+hi def link vivaDefine     Define
+hi def link vivaStatement  Define
 " viva lives
 
 let b:current_syntax = "viva"
