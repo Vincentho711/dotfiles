@@ -105,6 +105,7 @@ return {
         svh = "viva",
         vxh = "viva",
         out = "sh",
+        fmtcl = "tcl",
       },
       -- Set up custome filetypes mappings based on filename
       filename = {

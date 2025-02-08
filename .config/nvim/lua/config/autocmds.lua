@@ -21,6 +21,14 @@ vim.api.nvim_create_autocmd("ColorScheme", {
   end,
 })
 
+-- Set up commentstring for mini.comment for viva filetype
+vim.api.nvim_create_autocmd("Filetype", {
+  pattern = "viva",
+  callback = function()
+    vim.bo.commentstring = "// %s"
+  end
+})
+
 -- Functiuon to show the current hunk number and total hunks with Signify's hunk
 function _G.show_current_hunk()
   -- Get hunk stats using the internal signify function (this will depend on the available Lua interface for signify)

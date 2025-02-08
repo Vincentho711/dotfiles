@@ -65,7 +65,7 @@ map("n", "<leader>shu", ":SignifyHunkUndo<CR>", { desc = " Hunk Undo" })
 -- Mapping for SignifyNextHunk
 map("n", "<leader>shn", "<Plug>(signify-next-hunk)", { desc = " Hunk Next" })
 -- Mapping for SignifyPreviousHunk
-map("n", "<leader>shn", "<Plug>(signify-prev-hunk)", { desc = " Hunk Previous" })
+map("n", "<leader>shp", "<Plug>(signify-prev-hunk)", { desc = " Hunk Previous" })
 
 --Mapping for leap.nvim
 map({ "n", "x", "o" }, "s", "<Plug>(leap-forward)", { desc = "Leap forward" })
