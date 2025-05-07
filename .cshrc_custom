@@ -300,6 +300,11 @@ setenv MYPROMPT "tb500m"
 #set prompt="%M@${MYPROMPT}-%B%C%b%# "
 set prompt="%{\e[33m%}%M@${MYPROMPT}%{\e[37m%}-%B%{\e[32m%}%C%b%# "
 
+# Fetch API keys from ~/.api_keys if it exists, and source the env vars in there
+if (-e ~/.api_keys) then
+  source ~/.api_keys
+endif
+
 ########################################
 # Tree Scripts
 ########################################
