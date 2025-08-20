@@ -723,6 +723,7 @@ alias dumpemcfmresults 'gotoemccsyn ; /home/scratch.viho_mobile/genie/dev/dev_in
 # For navigating into specific common folders within the channel_top tree
 alias gorc 'ejtot; cd ip/mss/channel_top/1.0/reg_calc_channel/include/channel'
 alias gowb 'ejtot; cd ip/mss/channel_top/1.0/nvboot_stitched/tests/wb0_code_test'
+alias gonvbs 'ejtot; cd ip/mss/channel_top/1.0/nvboot_stitched/sdram'
 
 # For opening verdi, and load a .fsdb file
 # Run with 'sverdi channel_chi -ssf reprod_*_/ssrun-0.fsdb'
@@ -809,7 +810,7 @@ set complete = enhance   # Don't want list when autocomplete
 
 set path = ( \
         /home/utils/tmux-3.2a/bin \
-        /home/utils/neovim-0.10.0/bin \
+        /home/utils/neovim-0.11.2/bin \
   /home/utils/node-v16.16.0/bin \
   /home/utils/gcc-13.2.0/bin \
   /home/utils/Python-3.9.1/bin \

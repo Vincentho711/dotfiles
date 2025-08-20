@@ -55,6 +55,9 @@ return {
       "cpp",
       "perl",
       "tcl",
+      "css",
+      "sql",
+      "http",
     },
     incremental_selection = {
       enable = true,

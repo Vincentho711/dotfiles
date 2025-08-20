@@ -1,5 +1,5 @@
 return {
-  "williamboman/mason.nvim",
+  "mason-org/mason.nvim",
   cmd = "Mason",
   keys = { { "<leader>cm", "<cmd>Mason<cr>", desc = "Mason" } },
   build = ":MasonUpdate",
@@ -10,6 +10,10 @@ return {
       "shfmt",
       "verible",
       "clangd",
+      "black",
+      "tailwindcss-language-server",
+      "typescript-language-server",
+      "css-lsp",
     },
     automatic_installation = false,
   },
