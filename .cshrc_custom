@@ -707,7 +707,7 @@ alias nvim 'setenv CC clang; setenv CXX clang++; setenv LDFLAGS "-static-libgcc 
 # alias nvim="CC=clang CXX=clang++ LDFLAGS='-static-libgcc -static-libstdc++' command nvim"
 
 # Set tmux alias to support colour, italics and UTF-8
-alias tmux 'setenv TERM screen-256color-bce; /home/utils/tmux-3.2a/bin/tmux -2 -u'
+alias tmux 'setenv TERM screen-256color-bce; /home/utils/tmux-3.5a/bin/tmux -2 -u'
 
 # Using ripgrep to search for files within a directory with "rgf"
 alias rgf "rg --files | rg"
@@ -730,10 +730,12 @@ alias gonvbs 'ejtot; cd ip/mss/channel_top/1.0/nvboot_stitched/sdram'
 alias rverdi "qsub -q interactive_asic_32G_14D -Is 'nvrun -project tb500m verdi -ssy -ssv -ssz -nologo -simflow -simBin outdir/vot/ip/mss/channel_top/1.0/stand_sim/\!\!:1/testbench/simv/tb500m/\!\!:1.simv \!\!:2*' "
 
 # For running channel_chi and channel_emctb presubmit
-alias rpresubmit "ejtot; p4 opened; nvrun presubmit -chip tb500m -tb 'channel_chi channel_emctb'"
+alias rtb500mpresubmit "ejtot; p4 opened; nvrun presubmit -chip tb500m -tb 'channel_chi channel_emctb'"
+alias rtb600mpresubmit "ejtot; p4 opened; nvrun presubmit -chip tb600m -tb 'channel_chi channel_emctb'"
 
 # For listing the commands ran in 'nvrun presubmit -chip tb500m -tb "channel_chi channel_emctb'"
-alias rlistpresubmit "ejtot; nvrun presubmit -list -chip tb500m -tb 'channel_chi channel_emctb'"
+alias rtb500mlistpresubmit "ejtot; nvrun presubmit -list -chip tb500m -tb 'channel_chi channel_emctb'"
+alias rtb600mlistpresubmit "ejtot; nvrun presubmit -list -chip tb600m -tb 'channel_chi channel_emctb'"
 
 # For running gtask as2_sanity
 alias rgtask "ejtot; gtask as2_simt_sanity"
@@ -809,8 +811,8 @@ set complete = enhance   # Don't want list when autocomplete
 # )
 
 set path = ( \
-        /home/utils/tmux-3.2a/bin \
-        /home/utils/neovim-0.11.2/bin \
+        /home/utils/tmux-3.5a/bin \
+        /home/utils/neovim-0.11.4/bin \
   /home/utils/node-v16.16.0/bin \
   /home/utils/gcc-13.2.0/bin \
   /home/utils/Python-3.9.1/bin \
@@ -819,7 +821,7 @@ set path = ( \
   /home/utils/llvm-14.0.0/bin \
   /home/utils/make-4.3/bin \
   /home/utils/llvm-14.0.0/bin \
-  /home/utils/tree-sitter-0.20.6/bin \
+  /home/utils/tree-sitter-0.25.6/bin \
   /home/.locals/bin \
   /home/utils/Python-3.11.0/bin \
   /home/utils/bash-5.2/bin \
@@ -836,5 +838,6 @@ set path = ( \
   /home/utils/bat-0.23.0/bin/ \
   /home/utils/meld-3.20.4/bin/ \
   /home/utils/Python/builds/3.10.10-20230601/bin/ \
+  /home/utils/rust-1.86.0/bin/ \
   $path:q \
 )

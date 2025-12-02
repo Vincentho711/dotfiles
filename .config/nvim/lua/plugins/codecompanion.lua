@@ -1,7 +1,7 @@
 return {
     "olimorris/codecompanion.nvim",
     dependencies = {
-      {"echasnovski/mini.diff", opts = {}},
+      {"nvim-mini/mini.diff", opts = {}},
       {"folke/noice.nvim"}, -- For showing the status of LLM, used by companion-notification.lua
       {"nvim-lua/plenary.nvim" },
     },
@@ -59,6 +59,7 @@ return {
             },
           })
         end,
+        -- Chipnemo endpoint
         chipnemo_copilot = function ()
           return require("codecompanion.adapters").extend("openai", {
             url = "https://chipnemo-chat-api.nvidia.com/api/v1/chat/completions",
@@ -123,7 +124,33 @@ return {
             }
           }
         })
-        end
+        end,
+        gemini = function ()
+          return require("codecompanion.adapters").extend("gemini", {
+            -- url = "https://llm-proxy.perflab.nvidia.com/gemini/v1beta/models/gemini-2.5-pro:generateContent",
+            url = "https://inference-api.nvidia.com/v1/chat/completions",
+            env = {
+              api_key = function()
+                local key = os.getenv("INFERENCE_HUB_API_KEY")
+                if not key or key == "" then
+                  require("noice").notify("INFERENCE_HUB_API_KEY not found or empty. Please set it in your environment to use gemini.", "error", {
+                    title = "CodeCompanion Error",
+                    timeout = 5000,
+                    render = "minimal",
+                })
+                return nil -- Return nil to make the error more obvious
+              end
+              return key
+            end
+          },
+          schema = {
+            model = {
+              -- default = "gemini-2.5-pro"
+              default = "gcp/google/gemini-3-pro"
+            }
+          }
+        })
+      end
       },
       display = {
         diff = {
